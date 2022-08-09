@@ -1,10 +1,15 @@
 import http.client
 from classSensores import Sensores
 from classApi import Api
+from classJson import classJson
 class Main():
     def __init__(self, data=None):
         self.lstSensores = Sensores()
         self.api = Api()
+        self.json = classJson()
+        self.codeApi = self.api.login()
+        x = self.api.recuperaSensores()
+        self.json.saveSensores(x)
         if(data == None):
             self.lstSensores.load()
         else:

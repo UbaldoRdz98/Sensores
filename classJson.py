@@ -17,3 +17,7 @@ class classJson:
         except:
             pass
         return None
+
+    def saveSensores(self, data):
+        with open("JSONS/listSensores.json", "w") as myFile:
+            json.dump(data, myFile, indent = 4)

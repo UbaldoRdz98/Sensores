@@ -7,9 +7,10 @@ from classLista import ListObject
 from classDatos import DatosSensores
 from w1thermsensor import W1ThermSensor, Unit
 class Sensores(ListObject):
-    def __init__(self, tipo="", nombre="", pines =[]):
+    def __init__(self, _id="", tipo="", nombre="", pines =[]):
         self.count = 0
         self.start_counter = 0
+        self._id = _id
         self.tipo = tipo
         self.nombre = nombre
         self.pines = pines
@@ -25,7 +26,7 @@ class Sensores(ListObject):
                 lista.append(value.getDict())
             return lista
         elif (self.tipo):
-            return {"Tipo": self.tipo, "Nombre": self.nombre, "Pines": self.pines}
+            return {"_id": self._id, "Tipo": self.tipo, "Nombre": self.nombre, "Pines": self.pines}
         else:
             return []
 
@@ -36,7 +37,7 @@ class Sensores(ListObject):
 
     def dictToObject(self, listData):
         for value in listData:
-            self.add(Sensores(value["Tipo"], value["Nombre"], value["Pines"]))
+            self.add(Sensores(value["_id"], value["Tipo"], value["Nombre"], value["Pines"]))
 
     def countPulse(self, channel):
         if self.start_counter == 1:
@@ -68,7 +69,7 @@ class Sensores(ListObject):
             0
 
     def readCaudal(self):
-        objSen = Sensores(self.tipo, self.nombre, self.pines[0])
+        objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pines[0], GPIO.IN, pull_up_down = GPIO.PUD_UP)
         GPIO.add_event_detect(self.pines[0], GPIO.FALLING, callback=self.countPulse)
@@ -92,7 +93,7 @@ class Sensores(ListObject):
             GPIO.cleanup()
 
     def readTemperatura(self, Pin):
-        objSen = Sensores(self.tipo, self.nombre, self.pines[0])
+        objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
         sens = W1ThermSensor()
         temp = sens.get_temperature()
         time.sleep(1)
@@ -103,7 +104,7 @@ class Sensores(ListObject):
         return objSen
 
     def readHumedad(self, Pin):
-        objSen = Sensores(self.tipo, self.nombre, self.pines[0])
+        objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
         ser = serial.Serial('/dev/ttyUSB0',9600)
         ser.flushInput()
         lineBytes = ser.readline()
@@ -112,17 +113,17 @@ class Sensores(ListObject):
         return objSen
 
     def readFotoresistencia(self, Pin):
-        objSen = Sensores(self.tipo, self.nombre, self.pines[0])
+        objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
         objSen.valor = 425.23
         return objSen
 
     def readMovimiento(self, Pin):
-        objSen = Sensores(self.tipo, self.nombre, self.pines[0])
+        objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
         objSen.valor = 1
         return objSen
 
     def readOxigeno(self, Pin):
-        objSen = Sensores(self.tipo, self.nombre, self.pines[0])
+        objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
         objSen.valor = 49.52
         return objSen
 
