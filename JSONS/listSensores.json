@@ -1,0 +1,23 @@
+[
+    {
+        "Tipo": "Caudal",
+        "Nombre": "Caudal-1",
+        "Pines": [
+            13
+        ]
+    },
+    {
+        "Tipo": "Temperatura",
+        "Nombre": "Temperatura-1",
+        "Pines": [
+            4
+        ]
+    },
+    {
+        "Tipo": "Humedad",
+        "Nombre": "Humedad-1",
+        "Pines": [
+            0
+        ]
+    }
+]
