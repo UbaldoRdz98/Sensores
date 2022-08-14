@@ -1,21 +1,29 @@
 [
     {
-        "_id": "62e9e45bfe4ce36211c399e8",
+        "_id": "62f704760f1fddef1c9df8ad",
         "Estacion": 1,
-        "Tipo": "Caudal",
-        "Nombre": "Caudal 1",
+        "Tipo": "Bomba",
+        "Nombre": "Bomba 1",
         "Pines": [
-            16
+            19
         ]
     },
     {
-        "_id": "62e9e66ab2db3e75e9e1e37e",
+        "_id": "62f80cd30f1fddef1c9df8bb",
         "Estacion": 1,
-        "Tipo": "Temperatura",
-        "Nombre": "Temperatura 1",
+        "Tipo": "Gas",
+        "Nombre": "Gas 1",
         "Pines": [
-            4,
-            5
+            0
+        ]
+    },
+    {
+        "_id": "62f822e20f1fddef1c9df8f4",
+        "Estacion": 1,
+        "Tipo": "Humedad",
+        "Nombre": "Humedad 1",
+        "Pines": [
+            0
         ]
     }
 ]

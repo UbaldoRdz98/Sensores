@@ -16,6 +16,7 @@ class Sensores(ListObject):
         self.pines = pines
         self.valor = 0.0
         self.fecha = None
+        self.ser = serial.Serial('/dev/ttyUSB0',9600,timeout=1)
         super(Sensores,self).__init__()
         self.filename = "JSONS/listSensores.json"
 
@@ -51,16 +52,16 @@ class Sensores(ListObject):
             x = self.readTemperatura(self.pines)
             return x
         elif self.tipo == "Humedad":
-            x = self.readHumedad(self.pines)
+            x = self.readHumedad()
             return x
         elif self.tipo == "Fotoresistencia":
-            x = self.readFotoresistencia(self.pines)
+            x = self.readFotoresistencia()
             return x
         elif self.tipo == "Movimiento":
             x = self.readMovimiento(self.pines)
             return x
-        elif self.tipo == "Oxigeno":
-            x = self.readOxigeno(self.pines)
+        elif self.tipo == "Gas":
+            x = self.readGas()
             return x
         elif self.tipo == "Bomba":
             x = self.readBomba(self.pines)
@@ -103,18 +104,22 @@ class Sensores(ListObject):
         objSen.valor = temp
         return objSen
 
-    def readHumedad(self, Pin):
+    def readHumedad(self):
         objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
-        ser = serial.Serial('/dev/ttyUSB0',9600)
-        ser.flushInput()
-        lineBytes = ser.readline()
-        line = lineBytes.decode('utf-8').strip()
-        objSen.valor = float(line)
+        self.ser.flush()
+        self.ser.write(self.tipo.encode('utf-8'))
+        time.sleep(0.5)
+        receive_string = self.ser.readline().decode('utf-8').rstrip()
+        objSen.valor = float(receive_string)
         return objSen
 
     def readFotoresistencia(self, Pin):
         objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
-        objSen.valor = 425.23
+        self.ser.flush()
+        self.ser.write(self.tipo.encode('utf-8'))
+        time.sleep(0.5)
+        receive_string = self.ser.readline().decode('utf-8').rstrip()
+        objSen.valor = float(receive_string)
         return objSen
 
     def readMovimiento(self, Pin):
@@ -122,9 +127,13 @@ class Sensores(ListObject):
         objSen.valor = 1
         return objSen
 
-    def readOxigeno(self, Pin):
+    def readGas(self):
         objSen = Sensores(self._id, self.tipo, self.nombre, self.pines[0])
-        objSen.valor = 49.52
+        self.ser.flush()
+        self.ser.write(self.tipo.encode('utf-8'))
+        time.sleep(0.5)
+        receive_string = self.ser.readline().decode('utf-8').rstrip()
+        objSen.valor = float(receive_string)
         return objSen
 
     def readBomba(self, Pin):
@@ -132,9 +141,11 @@ class Sensores(ListObject):
         GPIO.setup(Pin, GPIO.OUT)
         try:
             GPIO.output(Pin, GPIO.LOW)
+            print("Enciende")
             time.sleep(10)
+            print("Apaga")
             GPIO.output(Pin, GPIO.HIGH)
-            time.sleep(10)
+            time.sleep(3)
         finally:
             GPIO.cleanup()
         return 1
